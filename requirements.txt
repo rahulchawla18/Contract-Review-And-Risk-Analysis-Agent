@@ -1,0 +1,14 @@
+# Requirements file for Render deployment
+# Generated from pyproject.toml dependencies
+
+cryptography>=3.1.0
+fastapi>=0.121.1
+gradio>=4.0.0
+langchain>=1.0.5
+langchain-community>=0.4.1
+langchain-groq>=0.1.0
+pypdf>=6.2.0
+python-dotenv>=1.2.1
+python-multipart>=0.0.20
+uvicorn[standard]>=0.38.0
+
