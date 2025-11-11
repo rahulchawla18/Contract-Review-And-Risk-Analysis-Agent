@@ -578,7 +578,7 @@ uv run pytest
 
 ## 📧 Contact
 
-[Add your contact information or project maintainer details]
+Rahul Chawla [rahulchawla5247@gmail.com]
 
 ---
 
