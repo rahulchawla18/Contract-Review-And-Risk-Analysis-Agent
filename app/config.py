@@ -16,6 +16,8 @@ class Settings:
     # - "mixtral-8x7b-32768" (good balance)
     # - "gemma-7b-it" (fast, efficient)
     GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.1-8b-instant")
+    # Port configuration (default: 7861)
+    PORT = os.getenv("PORT", "7861")
 
 
 settings = Settings()

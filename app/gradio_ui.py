@@ -257,28 +257,20 @@ with gr.Blocks(
 
 if __name__ == "__main__":
     import os
-    import socket
     
-    # Get port from environment variable (for Render/cloud deployment) or find free port
-    port = os.getenv("PORT")
-    if port:
-        port = int(port)
-        server_name = "0.0.0.0"  # Listen on all interfaces for cloud deployment
+    # Get port from environment variable or use default static port 7861
+    port = os.getenv("PORT", "7861")
+    port = int(port)
+    
+    # Determine server name based on whether PORT was explicitly set (cloud) or using default (local)
+    if os.getenv("PORT"):
+        # Cloud deployment (Render, etc.) - bind to all interfaces
+        server_name = "0.0.0.0"
+        print(f"🚀 Starting Gradio UI on http://{server_name}:{port} (Cloud deployment mode)")
     else:
-        # Local development: find an available port
-        def find_free_port(start_port=7860, max_attempts=10):
-            for port in range(start_port, start_port + max_attempts):
-                try:
-                    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-                        s.bind(('127.0.0.1', port))
-                        return port
-                except OSError:
-                    continue
-            return start_port  # Fallback to default
-        
-        port = find_free_port()
+        # Local development - bind to localhost
         server_name = "127.0.0.1"
+        print(f"🚀 Starting Gradio UI on http://{server_name}:{port} (Local development mode)")
     
-    print(f"🚀 Starting Gradio UI on http://{server_name}:{port}")
     demo.launch(server_name=server_name, server_port=port, share=False)
 
