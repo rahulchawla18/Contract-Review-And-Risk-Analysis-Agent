@@ -3,6 +3,7 @@ import json
 import gradio as gr
 from app.services.pdf_loader import load_pdf
 from app.orchestrator import run_full_review
+from app.config import settings
 
 
 def format_clause_value(value):
@@ -256,21 +257,21 @@ with gr.Blocks(
 
 
 if __name__ == "__main__":
-    import os
+    # Get port from config (which loads from .env or uses default 7861)
+    port = int(settings.PORT)
     
-    # Get port from environment variable or use default static port 7861
-    port = os.getenv("PORT", "7861")
-    port = int(port)
-    
-    # Determine server name based on whether PORT was explicitly set (cloud) or using default (local)
-    if os.getenv("PORT"):
-        # Cloud deployment (Render, etc.) - bind to all interfaces
+    # Determine server name based on whether PORT was explicitly set in environment (cloud) or using default (local)
+    # Check if PORT was set in actual environment (not just .env) - indicates cloud deployment
+    port_from_env = os.getenv("PORT")
+    if port_from_env and port_from_env != "7861":
+        # Cloud deployment (Render, etc.) - PORT is set by platform, bind to all interfaces
         server_name = "0.0.0.0"
         print(f"🚀 Starting Gradio UI on http://{server_name}:{port} (Cloud deployment mode)")
     else:
         # Local development - bind to localhost
         server_name = "127.0.0.1"
         print(f"🚀 Starting Gradio UI on http://{server_name}:{port} (Local development mode)")
+        print(f"   Using port from config/.env: {port}")
     
     demo.launch(server_name=server_name, server_port=port, share=False)
 
